@@ -2,52 +2,119 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>VR Feedback</title>
+    <title>VR Feedback Form</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f2f2f2;
+        color: #333;
+      }
+      .input-style, .slider-style {
+        width: 90%;
+        padding: 10px;
+        margin-top: 10px;
+        font-size: 16px;
+        display: block;
+      }
+      .submit-style {
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        font-size: 18px;
+        border: none;
+        cursor: pointer;
+        margin-top: 20px;
+      }
+      .submit-style:hover {
+        background-color: #45a049;
+      }
+      .emoji-group {
+        font-size: 28px;
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .emoji-group span {
+        cursor: pointer;
+      }
+    </style>
   </head>
   <body>
     <a-scene>
-      <!-- Background -->
-      <a-sky color="#ECECEC"></a-sky>
-
-      <!-- Main Panel -->
-      <a-entity position="0 1.6 -3">
-        <a-plane color="#FFFFFF" width="2.5" height="1.5" material="shader: flat">
-          <!-- Submit Button -->
-          <a-box id="submitBtn"
-                 position="0 -0.5 0.01"
-                 depth="0.1" height="0.3" width="1"
-                 color="#4CAF50"
-                 event-set__enter="_event: mouseenter; color: #45a049"
-                 event-set__leave="_event: mouseleave; color: #4CAF50">
-            <a-text value="Submit"
-                    align="center"
-                    color="white"
-                    position="0 0 0.06"
-                    width="3"></a-text>
-          </a-box>
+      <a-entity position="0 1.6 -2">
+        <a-plane width="2.8" height="2" color="#ffffff">
+          <a-entity geometry="primitive: plane; height: 1.9; width: 2.7" material="color: #fff" position="0 0 0.01"></a-entity>
         </a-plane>
-
-        <!-- Question 1 -->
-        <a-text value="1. How was your experience?"
-                position="-1 0.3 0.01"
-                color="black"
-                width="2"></a-text>
-
-        <!-- Question 2 -->
-        <a-text value="2. What could be improved?"
-                position="-1 -0.05 0.01"
-                color="black"
-                width="2"></a-text>
-      </a-entity>
-
-      <!-- Gaze-Based Cursor + Camera -->
-      <a-entity camera look-controls>
-        <a-cursor fuse="true" fuse-timeout="1000"
-                  material="color: black; shader: flat"
-                  geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.015">
-        </a-cursor>
       </a-entity>
     </a-scene>
+
+    <div id="ui" style="position: absolute; top: 5%; left: 50%; transform: translateX(-50%); width: 90%; max-width: 450px; background: white; padding: 20px; border-radius: 10px;">
+      <form id="survey-form">
+        <label>1. What moment in the virtual pub felt most real or enjoyable to you?</label>
+        <textarea id="q1" class="input-style" required></textarea>
+
+        <label>2. Imagine you're leaving a review. Write one thing that stood out in your experience.</label>
+        <textarea id="q2" class="input-style" required></textarea>
+
+        <label>3. Use the slider to rate how comfortable you felt in the VR pub (1 = Not at all, 10 = Very):</label><br>
+        <input type="range" id="comfort" name="comfort" min="1" max="10" value="5" oninput="comfortValue.innerText = this.value">
+        <span id="comfortValue">5</span><br><br>
+
+        <label>4. Use the slider to rate your overall enjoyment of the virtual pub (1 = None, 10 = Maximum):</label><br>
+        <input type="range" id="enjoyment" name="enjoyment" min="1" max="10" value="5" oninput="enjoymentValue.innerText = this.value">
+        <span id="enjoymentValue">5</span><br><br>
+
+        <label>5. Tap on the emoji that best describes your feeling about the VR restaurant.</label>
+        <div class="emoji-group" id="mood">
+          <span>🙁</span> <!-- frown -->
+          <span>😐</span> <!-- plain face -->
+          <span>😊</span> <!-- smile -->
+          <span>😍</span> <!-- heart face -->
+          <span>🤯</span> <!-- mind blown -->
+        </div>
+
+        <label>6. Tap on the emoji that best describes using the controllers to type/scroll through your answers.</label>
+        <div class="emoji-group" id="emojiFeedback">
+          <span>😡</span> <!-- frustrated -->
+          <span>😐</span> <!-- straight face -->
+          <span>😊</span> <!-- smile -->
+          <span>🤪</span> <!-- teeth showing -->
+          <span>🤩</span> <!-- star face -->
+        </div>
+
+        <button type="submit" class="submit-style">Submit</button>
+      </form>
+      <div id="response-message" style="margin-top: 20px; font-size: 18px; color: green;"></div>
+    </div>
+
+    <script>
+      document.getElementById("survey-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const q1 = document.getElementById("q1").value;
+        const q2 = document.getElementById("q2").value;
+        const comfort = document.getElementById("comfort").value;
+        const enjoyment = document.getElementById("enjoyment").value;
+        const moodEmoji = document.querySelector("#mood span.selected")?.innerText || "none";
+        const feedbackEmoji = document.querySelector("#emojiFeedback span.selected")?.innerText || "none";
+
+        document.getElementById("response-message").innerText = `Thanks! We received your answers.`;
+        e.target.reset();
+        comfortValue.innerText = 5;
+        enjoymentValue.innerText = 5;
+      });
+
+      document.querySelectorAll(".emoji-group span").forEach(el => {
+        el.addEventListener("click", function () {
+          const group = el.parentNode;
+          group.querySelectorAll("span").forEach(s => s.classList.remove("selected"));
+          el.classList.add("selected");
+        });
+      });
+    </script>
   </body>
 </html>
