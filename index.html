@@ -10,6 +10,10 @@
         font-family: Arial, sans-serif;
         background: #f2f2f2;
         color: #333;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        overflow: auto;
       }
       .input-style, .slider-style {
         width: 90%;
@@ -42,6 +46,19 @@
       .emoji-group span {
         cursor: pointer;
       }
+      #ui {
+        position: absolute;
+        top: 5%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        max-width: 450px;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
     </style>
   </head>
   <body>
@@ -53,7 +70,7 @@
       </a-entity>
     </a-scene>
 
-    <div id="ui" style="position: absolute; top: 5%; left: 50%; transform: translateX(-50%); width: 90%; max-width: 450px; background: white; padding: 20px; border-radius: 10px;">
+    <div id="ui">
       <form id="survey-form">
         <label>1. What moment in the virtual pub felt most real or enjoyable to you?</label>
         <textarea id="q1" class="input-style" required></textarea>
