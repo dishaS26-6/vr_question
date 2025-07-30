@@ -61,15 +61,18 @@
         <label>2. Imagine you're leaving a review. Write one thing that stood out in your experience.</label>
         <textarea id="q2" class="input-style" required></textarea>
 
-        <label>3. Use the slider to rate how comfortable you felt in the VR pub (1 = Not at all, 10 = Very):</label><br>
+        <label>3. Describe the part of the restaurant that felt realistic or overwhelming.</label>
+        <textarea id="q3" class="input-style" required></textarea>
+
+        <label>4. Use the slider to rate how comfortable you felt in the VR pub (1 = Not at all, 10 = Very):</label><br>
         <input type="range" id="comfort" name="comfort" min="1" max="10" value="5" oninput="comfortValue.innerText = this.value">
         <span id="comfortValue">5</span><br><br>
 
-        <label>4. Use the slider to rate your overall enjoyment of the virtual pub (1 = None, 10 = Maximum):</label><br>
+        <label>5. Use the slider to rate your overall enjoyment of the virtual pub (1 = None, 10 = Maximum):</label><br>
         <input type="range" id="enjoyment" name="enjoyment" min="1" max="10" value="5" oninput="enjoymentValue.innerText = this.value">
         <span id="enjoymentValue">5</span><br><br>
 
-        <label>5. Tap on the emoji that best describes your feeling about the VR restaurant.</label>
+        <label>6. Tap on the emoji that best describes your feeling about the VR restaurant.</label>
         <div class="emoji-group" id="mood">
           <span>🙁</span> <!-- frown -->
           <span>😐</span> <!-- plain face -->
@@ -78,7 +81,7 @@
           <span>🤯</span> <!-- mind blown -->
         </div>
 
-        <label>6. Tap on the emoji that best describes using the controllers to type/scroll through your answers.</label>
+        <label>7. Tap on the emoji that best describes using the controllers to type/scroll through your answers.</label>
         <div class="emoji-group" id="emojiFeedback">
           <span>😡</span> <!-- frustrated -->
           <span>😐</span> <!-- straight face -->
@@ -97,6 +100,7 @@
         e.preventDefault();
         const q1 = document.getElementById("q1").value;
         const q2 = document.getElementById("q2").value;
+        const q3 = document.getElementById("q3").value;
         const comfort = document.getElementById("comfort").value;
         const enjoyment = document.getElementById("enjoyment").value;
         const moodEmoji = document.querySelector("#mood span.selected")?.innerText || "none";
